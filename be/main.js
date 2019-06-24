@@ -3,6 +3,7 @@ var app = express();
 var router = express.Router();
 var fs = require('fs');
 var mongoose = require('mongoose')
+var bodyParser = require('body-parser');
 
 app.set('views', './');
 app.use(express.static(__dirname + '../fe' +'/public'));
