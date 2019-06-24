@@ -2,6 +2,7 @@ var express = require('express')
 var app = express();
 var router = express.Router();
 var fs = require('fs');
+var mongoose = require('mongoose')
 
 app.set('views', './');
 app.use(express.static(__dirname + '../fe' +'/public'));
@@ -20,3 +21,6 @@ app.get('/',function (req, res) {
         }
     });
 });
+app.post('/login_check', function(req, res){
+
+})
