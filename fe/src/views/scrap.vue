@@ -13,21 +13,7 @@
       </v-layout>
     </v-container>
     <v-card class="mr-2 ml-2 mb-4">
-      <v-subheader>채채채용공고</v-subheader>
-      <v-layout row>
-        <v-flex xs2 sm2 xl2 ml-4 d-flex class="mr-5">
-          <v-select :items="items" label="Standard"></v-select>
-        </v-flex>
-        <v-flex xs2 sm2 xl2 ml-2 d-flex class="mr-5">
-          <v-select :items="items" label="Standard"></v-select>
-        </v-flex>
-        <v-flex xs2 sm2 xl2 ml-2 d-flex class="mr-5">
-          <v-select :items="items" label="Standard"></v-select>
-        </v-flex>
-        <v-flex mt-3>
-          <v-btn flat color="orange">상세검색</v-btn>
-        </v-flex>
-      </v-layout>
+      <v-subheader>스크랩</v-subheader>
       <v-container fluid grid-list-sm>
         <v-layout row wrap>
           <v-flex v-for="i in 6" :key="i" xs6 sm6>
