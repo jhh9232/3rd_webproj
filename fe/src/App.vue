@@ -1,7 +1,8 @@
 <template>
 <v-app>
-  <v-navigation-drawer v-model="drawer" app permanent clipped>
-    <v-list >
+  <v-navigation-drawer v-model="drawer" app permanent clipped enable-resize-watcher>
+    <v-list>
+      <v-container align-center>
       <h3 class="text-xs-center mt-3">로그인</h3>
       <div class="pa-3 mt-3  elevation-1">
         <v-text-field v-model="userId" label="ID">
@@ -10,14 +11,15 @@
         </v-text-field>
         <v-btn large block dark color="#36724F" @click="login()">로그인</v-btn>
       </div>
+    </v-container>
       <h3 class="text-xs-center mt-3">새로운 알림</h3>
       <v-container align-center>
         <v-flex mb-3 v-for="i in 4" :key="i" xm12 sm12 xl12>
-          <v-card color="#FFFFFC" class="white--text elevation-2" height="50px">
+          <v-card color="#FFFFFCC" class="white--text elevation-2" height="50px">
             <v-layout row>
               <v-flex xs7>
                 <v-card-title primary-title>
-                  <div> 
+                  <div>
                     <div class="headline">test</div>
                     <div>test test</div>
                   </div>
@@ -27,7 +29,6 @@
                 <v-img src="https://cdn.vuetifyjs.com/images/cards/halcyon.png" height="40px" contain></v-img>
               </v-flex>
             </v-layout>
-            <v-divider dark></v-divider>
           </v-card>
         </v-flex>
       </v-container>
