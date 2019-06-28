@@ -1,29 +1,14 @@
 <template>
 <v-layout align-center justify-center ml-4>
   <v-flex xs12 sm12>
-<h1 class="ml-4 mt-5">채용공고</h1>
+    <h1 class="ml-4 mt-5">스크랩</h1>
     <v-card class="mr-2 ml-2 mb-4 mt-2">
       <v-layout row wrap>
-        <v-flex ml-5 xs3 sm3>
+        <v-flex ml-5 xs4 sm4>
           <v-text-field v-model="search" label="Search" required></v-text-field>
         </v-flex>
         <v-flex mt-3>
-          <v-btn flat color="orange">검색아이콘</v-btn>
-        </v-flex>
-      </v-layout>
-      <v-layout row>
-        <v-flex ml-5 mt-4 xs1><h3>필터링</h3></v-flex>
-        <v-flex  ml-1 xs2 sm2 md1 lg1 xl1 d-flex class="mr-1">
-          <v-select :items="items" label="직무"></v-select>
-        </v-flex>
-        <v-flex  ml-5 xs2 sm2 md1 lg1 xl1 d-flex class="mr-1">
-          <v-select :items="items" label="근무지역"></v-select>
-        </v-flex>
-        <v-flex  ml-5 xs2 sm2 md1 lg1 xl1 d-flex class="mr-1">
-          <v-select :items="items" label="기업형태"></v-select>
-        </v-flex>
-        <v-flex mt-3>
-          <v-btn flat color="orange">상세검색</v-btn>
+          <v-btn flat color="orange">검색</v-btn>
         </v-flex>
       </v-layout>
       <v-container fluid grid-list-sm>
@@ -56,7 +41,6 @@ export default {
   name: 'App',
   data() {
     return {
-
     }
   },
   mounted() {},

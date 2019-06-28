@@ -14,46 +14,24 @@ export default new Router({
       component: Home
     },
     {
-      path: '/user',
-      name: 'user',
-      component: () => import('./views/user.vue')
-    },
-    {
-      path: '/REST',
-      name: 'rest',
-      component: () => import('./views/REST.vue')
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('./views/login.vue')
-    },
-    {
-      path: '/test',
-      name: 'test',
-      component: () => import('./views/test.vue')
-    },
-    {
-      path: '/sign',
-      name: 'sign',
-      component: () => import('./views/sign.vue')
-    },
-    {
       path: '/main',
       name: 'main',
       component: () => import('./views/main.vue')
     },
     {
-      path:'/test',
-      name:'헤더',
-      component: () => import('./views/test'),
-
-      beforeEnter: (to,from,next) => {
-        console.log(to)
-        console.log(from)
-        if(!localStorage.getItem('token')) return next('block')
-        next()
-      }
+      path: '/join',
+      name: 'join',
+      component: () => import('./views/join.vue')
+    },
+    {
+      path: '/scrap',
+      name: 'scrap',
+      component: () => import('./views/scrap.vue')
+    },
+    {
+      path: '/mypage',
+      name: 'mypage',
+      component: () => import('./views/mypage.vue')
     },
     {
      path:'/block',
