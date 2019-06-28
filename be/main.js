@@ -36,8 +36,19 @@ app.post('/signup', function(req, res){
     })
 })
 app.post('/findone', (req, res, next)=>{
-    console.log(req.body.id)
-    Users.findOne({id: req.body.id}, function(err, obj){
+    console.log(req.body.Id)
+    Users.findOne({id: req.body.Id}, function(err, obj){
+        if(err){
+            console.log(err)
+            res.send(err)
+        }
+        console.log(obj)
+        res.send('<script>alert("'+obj+'"); history.back();</script>')
+    })
+})
+app.post('/deleteone', (req, res, next)=>{
+    console.log(req.body.Id)
+    Users.deleteOne({id: req.body.Id}, function(err, obj){
         if(err){
             console.log(err)
             res.send(err)

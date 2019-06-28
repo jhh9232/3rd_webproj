@@ -15,10 +15,17 @@
             <br/><br/>
             <button type="submit">signup</button>
         </form>
+        <br/>
         <form name = "FindForm" action ="/findone", method="POST">
-            <input type = "text" name = "id" placeholder="FindID"/>
+            <input type = "text" name = "Id" placeholder="FindID"/>
             <br/><br/>
             <button type="submit">FIND</button>
+        </form>
+        <br/>
+        <form name = "DeleteForm" action = "/deleteone", method = "POST">
+            <input type = "text" name = "Id" placeholder="DeleteID"/>
+            <br/><br/>
+            <button type="submit">DELETE</button>
         </form>
     </body>
 </html>
