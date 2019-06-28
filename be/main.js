@@ -5,24 +5,44 @@ var fs = require('fs')
 var bodyParser = require('body-parser')
 var Users = require('./Users')
 
-app.set('views', './');
-app.use(express.static(__dirname + '../fe' +'/public'))
+app.set('views', './')
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(__dirname +'/public'))
 
 app.listen(3303, function() {
     console.log('Server start')
-});
+})
 
 app.get('/',function (req, res) {
-    fs.readFile('../fe/test.html',function(error,data) {
+    fs.readFile('test.html',function(error,data) {
         if(error) {
             console.log(error)
         }else {
             res.writeHead(200,{'Content-Type':'text/html'})
             res.end(data)
         }
-    });
-});
-app.post('/login_check', function(req, res){
-    id = req.body._id
-    pw = req.body._pw
+    })
+})
+app.post('/signup', function(req, res){
+    const {Id, Pw, Email, Newcomer}=req.body;
+    const u = new Users({id: Id, pw: Pw, email: Email, newcomer: Newcomer})
+    u.save().then(r => {
+        //res.send({success : true, msg : r})
+        res.send('<script>alert("회원가입 성공!"); history.back();</script>');
+    }).catch(e => {
+        console.log(e)
+        res.send({success: false, msg : e.message});
+    })
+})
+app.post('/findone', (req, res, next)=>{
+    console.log(req.body.id)
+    Users.findOne({id: req.body.id}, function(err, obj){
+        if(err){
+            console.log(err)
+            res.send(err)
+        }
+        console.log(obj)
+        res.send('<script>alert("'+obj+'"); history.back();</script>')
+    })
 })
