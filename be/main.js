@@ -73,10 +73,10 @@ app.post('/deleteone', (req, res, next)=>{
 })
 app.post('/scrapCompany', function(req, res){
   const { user_id, company } = req.body
-  const s = new Scrap({user_id:user_id,company_title:company.Company_title,
-  company_url:company.Company_url,recruit_title:company.Recruit_title,
-  recruit_url:company.Recruit_url,careers:company.Careers,position:company.Position,
-  deadline:company.Deadline})
+  const s = new Scrap({user_id:user_id,Company_title:company.Company_title,
+  Company_url:company.Company_url,Recruit_title:company.Recruit_title,
+  Recruit_url:company.Recruit_url,Careers:company.Careers,Position:company.Position,
+  Deadline:company.Deadline})
   console.log(s)
   s.save().then(r => {
     res.send({success : true})
@@ -96,7 +96,7 @@ app.get('/getScrapCompany/:user_id',function (req, res) {
 })
 app.post('/deleteScrapCompany',function (req, res) {
   const { user_id, company_title } = req.body
-  Scrap.deleteOne({user_id: user_id,company_title:company_title })
+  Scrap.deleteOne({user_id: user_id,Company_title:company_title })
     .then(r => {
       res.send({ success: true, msg: r })
     })

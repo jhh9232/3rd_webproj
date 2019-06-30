@@ -11,19 +11,19 @@
                 <v-icon large left>
                   mdi-twitter
                 </v-icon>
-                <span class="title headline font-weight-bold ">{{item.company_title}} </span>
+                <span class="title headline font-weight-bold ">{{item.Company_title}} </span>
               </v-card-title>
               <v-card-text>
-                {{item.recruit_title}}<br>
-                경력 : {{item.careers}}<br>
-                위치 : {{item.position}}<br>
-                모집기간 : {{item.deadline}}<br>
+                {{item.Recruit_title}}<br>
+                경력 : {{item.Careers}}<br>
+                위치 : {{item.Position}}<br>
+                모집기간 : {{item.Deadline}}<br>
                 <br>
                 <hr>
                 <br>
                 지원하기
                 <br>
-                <span><a>{{item.recruit_url}}</a></span><br>
+                <span><a>{{item.Recruit_url}}</a></span><br>
               </v-card-text>
               <v-card-actions>
                 <v-list-tile class="grow">
@@ -94,7 +94,7 @@ export default {
       var user_id = sessionStorage.getItem('loginId')
       axios.post('http://localhost:3303/deleteScrapCompany', {
           user_id: user_id,
-          company_title: company.company_title
+          company_title: company.Company_title
         })
         .then((r) => {
           if(this.pagingCompanys.length<1||this.nowPage>1){

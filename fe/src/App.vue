@@ -61,7 +61,7 @@
   </v-navigation-drawer>
   <v-toolbar app color="#2C3E50">
     <!-- <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon> -->
-    <v-toolbar-title class="cyan--text">JABARA JOB</v-toolbar-title>
+    <v-toolbar-title class="cyan--text"><a href="http://localhost:8080/main">JABARA JOB</a></v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items>
       <v-menu bottom left>
@@ -118,3 +118,7 @@ export default {
   }
 }
 </script>
+<style type="text/css">
+ a:link { color:#00BCD4; text-decoration: none;}
+ a:visited { color: #00BCD4; text-decoration: none;}
+</style>

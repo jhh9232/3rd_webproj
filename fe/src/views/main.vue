@@ -138,12 +138,12 @@ export default {
       nowPage: 1,
       startPage: 0,
       endPage: 10,
-      maxPage: 0
+      maxPage: 0,
+      scrapCheck: false
     }
   },
   mounted() {
     this.getCompanyList()
-    this.getScrapCompany()
   },
   methods: {
     paging() {
@@ -158,7 +158,7 @@ export default {
       this.nowPage = 1
       this.startPage = 0
       this.endPage = 10
-      this.pagingCompanyList()
+      this.getCompanyList()
     },
     pagingCompanyList() {
       this.pagingCompanys = this.companys.slice(this.startPage, this.endPage)
@@ -177,22 +177,29 @@ export default {
           .then((r) => {
             var com = JSON.stringify(r.data)
             this.companys = JSON.parse(com)
-            this.pagingCompanys = this.companys.slice(this.startPage, this.endPage)
-            this.maxPage = Math.ceil(this.companys.length / 10)
+            if(this.companys.length){
+              this.pagingCompanys = this.companys.slice(this.startPage, this.endPage)
+              this.maxPage = Math.ceil(this.companys.length / 10)
+            }else{
+              this.pagingCompanys=[]
+              this.maxPage=1
+            }
           })
       }
     },
     postScrapCompany(scrapCompany) {
       var loginId = sessionStorage.getItem('loginId')
-      axios.post('http://localhost:3303/scrapCompany/',{
-        company:scrapCompany,
-        user_id:loginId})
+      axios.post('http://localhost:3303/scrapCompany/', {
+          company: scrapCompany,
+          user_id: loginId
+        })
         .then((r) => {
           alert("스크랩이 되었습니다.")
         })
         .catch((e) => {
           console.error(e.message)
         })
+
     }
   }
 }
