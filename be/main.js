@@ -4,15 +4,27 @@ var router = express.Router()
 var fs = require('fs')
 var bodyParser = require('body-parser')
 var Users = require('./Users')
+const cors = require('cors'); //cors 설정
+var mongoose = require('mongoose');
 
 app.set('views', './')
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname +'/public'))
 
+app.use(cors()) // api 위에서 사용하겠다고 선언
+
+
 app.listen(3303, function() {
     console.log('Server start')
 })
+
+// mongodb setup
+mongoose.connect('mongodb://127.0.0.1:27017/3webDB',
+ { useNewUrlParser: true }, (err) => {
+   if (err) return console.error(err)
+   console.log('mongoose connected!')
+ })
 
 app.get('/',function (req, res) {
     fs.readFile('test.html',function(error,data) {
@@ -28,7 +40,7 @@ app.post('/signup', function(req, res){
     const {Id, Pw, Email, Newcomer}=req.body;
     const u = new Users({id: Id, pw: Pw, email: Email, newcomer: Newcomer})
     u.save().then(r => {
-        //res.send({success : true, msg : r})
+        res.send({success : true, msg : r})
         res.send('<script>alert("회원가입 성공!"); history.back();</script>');
     }).catch(e => {
         console.log(e)
@@ -42,8 +54,9 @@ app.post('/findone', (req, res, next)=>{
             console.log(err)
             res.send(err)
         }
-        console.log(obj)
-        res.send('<script>alert("'+obj+'"); history.back();</script>')
+        console.log({ success: true, token: obj })
+        res.send({ success: true, token: obj })
+        //res.send('<script>alert("'+obj+'"); history.back();</script>')
     })
 })
 app.post('/deleteone', (req, res, next)=>{
@@ -54,6 +67,6 @@ app.post('/deleteone', (req, res, next)=>{
             res.send(err)
         }
         console.log(obj)
-        res.send('<script>alert("'+obj+'"); history.back();</script>')
+        //res.send('<script>alert("'+obj+'"); history.back();</script>')
     })
 })

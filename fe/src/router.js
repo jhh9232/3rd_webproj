@@ -19,9 +19,9 @@ export default new Router({
       component: () => import('./views/main.vue')
     },
     {
-      path: '/join',
-      name: 'join',
-      component: () => import('./views/join.vue')
+      path: '/signup',
+      name: 'signup',
+      component: () => import('./views/signup.vue')
     },
     {
       path: '/scrap',
