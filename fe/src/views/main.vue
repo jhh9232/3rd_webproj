@@ -13,7 +13,7 @@
       </v-layout>
       <v-container fluid grid-list-sm>
         <v-layout row wrap>
-          <v-flex v-for="item in pagingCompany" xs6 sm6>
+          <v-flex v-for="item in pagingCompanys" xs6 sm6>
             <v-card class="mr-2 ml-2 mb-4 mt-2 mx-auto" max-width="500">
               <v-card-title>
                 <v-icon large left>
@@ -44,7 +44,7 @@
                   </v-list-tile-content>
 
                   <v-layout align-center justify-end>
-                    <v-btn flat color="orange" @click="paging">
+                    <v-btn flat color="orange" @click="postScrapCompany(item)">
                       <v-icon>bookmarks</v-icon>
                       스크랩
                     </v-btn>
@@ -132,9 +132,8 @@ export default {
           filterField: 'sw_hw'
         }
       ],
-      company: [],
-      pagingCompany: [],
-      search: '',
+      companys: [],
+      pagingCompanys: [],
       selected: 'all',
       nowPage: 1,
       startPage: 0,
@@ -144,12 +143,13 @@ export default {
   },
   mounted() {
     this.getCompanyList()
+    this.getScrapCompany()
   },
   methods: {
     paging() {
       this.endPage = this.nowPage * 10
       this.startPage = this.endPage - 10
-      this.getCompanyList()
+      this.pagingCompanyList()
       // console.log('now'+this.nowPage)
       // console.log('start'+this.startPage)
       // console.log('end'+this.endPage)
@@ -158,27 +158,41 @@ export default {
       this.nowPage = 1
       this.startPage = 0
       this.endPage = 10
-      this.getCompanyList()
+      this.pagingCompanyList()
+    },
+    pagingCompanyList() {
+      this.pagingCompanys = this.companys.slice(this.startPage, this.endPage)
     },
     getCompanyList() {
-      console.log("get")
       if (this.selected == "all") {
         axios.get(`http://localhost:5505/`)
           .then((r) => {
             var com = JSON.stringify(r.data)
-            this.company = JSON.parse(com)
-            this.pagingCompany = this.company.slice(this.startPage, this.endPage)
-            this.maxPage=Math.ceil(this.company.length/10)
+            this.companys = JSON.parse(com)
+            this.pagingCompanys = this.companys.slice(this.startPage, this.endPage)
+            this.maxPage = Math.ceil(this.companys.length / 10)
           })
       } else {
         axios.get(`http://localhost:5505/` + this.selected)
           .then((r) => {
             var com = JSON.stringify(r.data)
-            this.company = JSON.parse(com)
-            this.pagingCompany = this.company.slice(this.startPage, this.endPage)
-            this.maxPage=Math.ceil(this.company.length/10)
+            this.companys = JSON.parse(com)
+            this.pagingCompanys = this.companys.slice(this.startPage, this.endPage)
+            this.maxPage = Math.ceil(this.companys.length / 10)
           })
       }
+    },
+    postScrapCompany(scrapCompany) {
+      var loginId = sessionStorage.getItem('loginId')
+      axios.post('http://localhost:3303/scrapCompany/',{
+        company:scrapCompany,
+        user_id:loginId})
+        .then((r) => {
+          alert("스크랩이 되었습니다.")
+        })
+        .catch((e) => {
+          console.error(e.message)
+        })
     }
   }
 }

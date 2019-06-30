@@ -4,6 +4,7 @@ var router = express.Router()
 var fs = require('fs')
 var bodyParser = require('body-parser')
 var Users = require('./Users')
+var Scrap = require('./Scrap')
 const cors = require('cors'); //cors 설정
 var mongoose = require('mongoose');
 
@@ -68,5 +69,38 @@ app.post('/deleteone', (req, res, next)=>{
         }
         console.log(obj)
         //res.send('<script>alert("'+obj+'"); history.back();</script>')
+    })
+})
+app.post('/scrapCompany', function(req, res){
+  const { user_id, company } = req.body
+  const s = new Scrap({user_id:user_id,company_title:company.Company_title,
+  company_url:company.Company_url,recruit_title:company.Recruit_title,
+  recruit_url:company.Recruit_url,careers:company.Careers,position:company.Position,
+  deadline:company.Deadline})
+  console.log(s)
+  s.save().then(r => {
+    res.send({success : true})
+  }).catch(e => {
+    res.send({success : false})
+  })
+})
+app.get('/getScrapCompany/:user_id',function (req, res) {
+  const user_id = req.params.user_id
+  Scrap.find({user_id:user_id})
+  .then(r => {
+    res.send({ success: true, msg: r })
+  })
+  .catch(e => {
+    res.send({ success: false, msg: e.message })
+  })
+})
+app.post('/deleteScrapCompany',function (req, res) {
+  const { user_id, company_title } = req.body
+  Scrap.deleteOne({user_id: user_id,company_title:company_title })
+    .then(r => {
+      res.send({ success: true, msg: r })
+    })
+    .catch(e => {
+      res.send({ success: false, msg: e.message })
     })
 })
