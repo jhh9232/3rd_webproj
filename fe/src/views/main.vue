@@ -177,29 +177,33 @@ export default {
           .then((r) => {
             var com = JSON.stringify(r.data)
             this.companys = JSON.parse(com)
-            if(this.companys.length){
+            if (this.companys.length) {
               this.pagingCompanys = this.companys.slice(this.startPage, this.endPage)
               this.maxPage = Math.ceil(this.companys.length / 10)
-            }else{
-              this.pagingCompanys=[]
-              this.maxPage=1
+            } else {
+              this.pagingCompanys = []
+              this.maxPage = 1
             }
           })
       }
     },
     postScrapCompany(scrapCompany) {
       var loginId = sessionStorage.getItem('loginId')
-      axios.post('http://localhost:3303/scrapCompany/', {
-          company: scrapCompany,
-          user_id: loginId
-        })
-        .then((r) => {
-          alert("스크랩이 되었습니다.")
-        })
-        .catch((e) => {
-          console.error(e.message)
-        })
-
+      console.log(loginId)
+      if (loginId==null) {
+        alert("로그인 후 이용할 수 있습니다.")
+      } else {
+        axios.post('http://localhost:3303/scrapCompany/', {
+            company: scrapCompany,
+            user_id: loginId
+          })
+          .then((r) => {
+            alert("스크랩이 되었습니다.")
+          })
+          .catch((e) => {
+            console.error(e.message)
+          })
+      }
     }
   }
 }

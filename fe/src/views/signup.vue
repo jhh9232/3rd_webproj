@@ -72,7 +72,9 @@
               </v-form>
               <v-card-actions layout>
                 <v-spacer></v-spacer>
-                <v-btn dark color="success" @click="signUp">회원가입</v-btn>
+                <div class="layout mt-5 mb-3">
+                <v-btn class="font-weight-bold" color="#F1C40F" @click="signup">회원가입</v-btn>
+              </div>
               </v-card-actions>
         </v-card>
       </v-flex>
@@ -100,7 +102,7 @@ export default {
   },
   mounted() {},
   methods: {
-    signUp() {
+    signup() {
       axios.post('http://localhost:3303/signup', this.form)
         .then(r => {
           if (r.data.success) {

@@ -11,7 +11,7 @@
             <v-text-field v-model="form.Pw" label="PASSWORD" type="password">
             </v-text-field>
             <v-btn large block dark color="#F1C40F" class="black--text font-weight-bold" @click="login()">로그인</v-btn>
-            <v-btn large block dark color="#F1C40F" class="black--text font-weight-bold" @click="signInPage()">회원가입</v-btn>
+            <v-btn large block dark color="#F1C40F" class="black--text font-weight-bold" @click="signupPage()">회원가입</v-btn>
           </div>
         </template>
         <template v-if="loginCheck">
@@ -108,12 +108,18 @@ export default {
           this.loginId = r.data.token.id
           this.loginCheck = true
         })
-        .catch(e => console.error(e.message))
+        .catch(e =>{
+          alert("아이디나 비밀번호가 잘못되었습니다.")
+          console.error(e.message)
+        })
     },
     logout() {
       sessionStorage.removeItem('token');
       sessionStorage.removeItem('loginId');
       this.loginCheck = false
+    },
+    signupPage(){
+      location.href = "http://localhost:8080/signup"
     }
   }
 }
