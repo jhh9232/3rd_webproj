@@ -42,7 +42,6 @@ app.post('/signup', function(req, res){
     const u = new Users({id: Id, pw: Pw, email: Email, newcomer: Newcomer})
     u.save().then(r => {
         res.send({success : true, msg : r})
-        res.send('<script>alert("회원가입 성공!"); history.back();</script>');
     }).catch(e => {
         console.log(e)
         res.send({success: false, msg : e.message});
@@ -78,10 +77,11 @@ app.post('/scrapCompany', function(req, res){
   Recruit_url:company.Recruit_url,Careers:company.Careers,Position:company.Position,
   Deadline:company.Deadline})
   console.log(s)
-  s.save().then(r => {
+  s.save()
+  .then(r => {
     res.send({success : true})
   }).catch(e => {
-    res.send({success : false})
+    res.send({success : false, msg: e.message})
   })
 })
 app.get('/getScrapCompany/:user_id',function (req, res) {

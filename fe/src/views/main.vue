@@ -14,24 +14,15 @@
       <v-container fluid grid-list-sm>
         <v-layout row wrap>
           <v-flex v-for="item in pagingCompanys" xs6 sm6>
-            <v-card class="mr-2 ml-2 mb-4 mt-2 mx-auto" max-width="500">
-              <v-card-title>
-                <v-icon large left>
-                  mdi-twitter
-                </v-icon>
+            <v-card class="mr-2 ml-2 mb-4 mt-2 mx-auto" max-width="500" @click="pageLocate(item.Recruit_url)">
+              <v-card-title class="ml-2">
                 <span class="title headline font-weight-bold ">{{item.Company_title}} </span>
               </v-card-title>
-              <v-card-text>
-                {{item.Recruit_title}}<br>
+              <v-card-text class="ml-3">
+                <span class="font-weight-bold">{{item.Recruit_title}}</span><br><br>
                 경력 : {{item.Careers}}<br>
                 위치 : {{item.Position}}<br>
                 모집기간 : {{item.Deadline}}<br>
-                <br>
-                <hr>
-                <br>
-                지원하기
-                <br>
-                <span><a>{{item.Recruit_url}}</a></span><br>
               </v-card-text>
               <v-card-actions>
                 <v-list-tile class="grow">
@@ -165,7 +156,7 @@ export default {
     },
     getCompanyList() {
       if (this.selected == "all") {
-        axios.get(`http://localhost:5505/`)
+        axios.get(`http://10.120.73.194:5505/`)
           .then((r) => {
             var com = JSON.stringify(r.data)
             this.companys = JSON.parse(com)
@@ -173,7 +164,7 @@ export default {
             this.maxPage = Math.ceil(this.companys.length / 10)
           })
       } else {
-        axios.get(`http://localhost:5505/` + this.selected)
+        axios.get(`http://10.120.73.194:5505/` + this.selected)
           .then((r) => {
             var com = JSON.stringify(r.data)
             this.companys = JSON.parse(com)
@@ -189,7 +180,6 @@ export default {
     },
     postScrapCompany(scrapCompany) {
       var loginId = sessionStorage.getItem('loginId')
-      console.log(loginId)
       if (loginId==null) {
         alert("로그인 후 이용할 수 있습니다.")
       } else {
@@ -199,11 +189,15 @@ export default {
           })
           .then((r) => {
             alert("스크랩이 되었습니다.")
+            console.log(r)
           })
           .catch((e) => {
             console.error(e.message)
           })
       }
+    },
+    pageLocate(url){
+      location.href=url
     }
   }
 }

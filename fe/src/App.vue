@@ -25,12 +25,18 @@
               </v-flex>
               <v-flex>
                 <h3>{{loginId}}</h3>
-                <h4 class="mt-1">
-                  <v-icon :size="15">bookmarks</v-icon>
+                <div class="mt-1">
+                  <v-icon :size="17">bookmarks</v-icon>
                   <a href="http://localhost:8080/scrap" style="color:gray">
                     스크랩
                   </a>
-                </h4><br>
+                </div>
+                <div>
+                  <v-icon :size="17">face</v-icon>
+                  <a href="http://localhost:8080/mypage" style="color:gray">
+                    마이페이지
+                  </a>
+                </div><br>
               </v-flex>
             </v-layout>
             <v-btn large block dark color="#F1C40F" class="black--text font-weight-bold" @click="logout()">로그아웃</v-btn>
@@ -39,28 +45,36 @@
       </v-container>
       <h3 class="text-xs-center mt-3">새로운 알림</h3>
       <v-container align-center>
-        <v-flex mb-3 v-for="i in 4" :key="i" xm12 sm12 xl12>
-          <v-card color="#FFFFFCC" class="white--text elevation-2" height="50px">
-            <v-layout row>
-              <v-flex xs7>
-                <v-card-title primary-title>
-                  <div>
-                    <div class="headline">test</div>
-                    <div>test test</div>
-                  </div>
-                </v-card-title>
-              </v-flex>
-              <v-flex xs5 mt-1>
-                <v-img src="https://cdn.vuetifyjs.com/images/cards/halcyon.png" height="40px" contain></v-img>
-              </v-flex>
-            </v-layout>
-          </v-card>
-        </v-flex>
+        <template v-if="loginCheck">
+          <v-flex mb-3 v-for="item in noticeCompanys" xm12 sm12 xl12>
+            <v-card color="#FFFFFCC" class="black--text elevation-2" height="50px" @click="noticeCompanyDetail(item)">
+              <v-layout row>
+                <v-flex xs9 ml-2 mt-1>
+                  <div>{{item.Company_title}}</div>
+                  <div><small>{{item.Recruit_title.slice(0,17)}}...</small></div>
+                </v-flex>
+                <v-flex>
+                  <v-btn fab flat small color="orange" @click="noticeCompanyDetail(item)">
+                    <v-icon>details</v-icon>
+                  </v-btn>
+                </v-flex>
+              </v-layout>
+            </v-card>
+          </v-flex>
+        </template>
+        <template v-if="!loginCheck">
+          <v-flex mb-3 xm12 sm12 xl12>
+            <v-card color="#FFFFFCC" class="black--text elevation-2" height="50px">
+              <v-layout justify-center>
+                <div>로그인 후 이용할 수 있습니다.</div>
+              </v-layout>
+            </v-card>
+          </v-flex>
+        </template>
       </v-container>
     </v-list>
   </v-navigation-drawer>
   <v-toolbar app color="#2C3E50">
-    <!-- <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon> -->
     <v-toolbar-title class="cyan--text"><a href="http://localhost:8080/main">JABARA JOB</a></v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items>
@@ -74,6 +88,41 @@
   <v-content>
     <router-view />
   </v-content>
+  <v-dialog v-model="dialog" max-width="550">
+    <v-card class="mr-2 ml-4 mb-4 mt-2 mx-auto" max-width="500" @click="pageLocate()">
+      <v-card-title>
+        <span class="title headline font-weight-bold ml-2">{{com.company_title}} </span>
+      </v-card-title>
+      <v-card-text class="ml-3">
+        <span class="font-weight-bold">{{com.recruit_title}}</span><br>
+        경력 : {{com.careers}}<br>
+        위치 : {{com.position}}<br>
+        모집기간 : {{com.deadline}}<br>
+      </v-card-text>
+      <v-card-actions>
+        <v-list-tile class="grow">
+          <v-list-tile-avatar color="grey darken-3">
+            <v-img class="elevation-6" src="https://cdn.vuetifyjs.com/images/cards/desert.jpg">
+            </v-img>
+          </v-list-tile-avatar>
+          <v-list-tile-content>
+            <v-list-tile-title>JABARA JOB</v-list-tile-title>
+          </v-list-tile-content>
+
+          <v-layout align-center justify-end>
+            <v-btn flat color="orange" @click="postScrapCompany(item)">
+              <v-icon>bookmarks</v-icon>
+              스크랩
+            </v-btn>
+            <v-btn flat color="blue-grey darken-3" @click="">
+              <v-icon>share</v-icon>
+              공유
+            </v-btn>
+          </v-layout>
+        </v-list-tile>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </v-app>
 </template>
 
@@ -90,13 +139,25 @@ export default {
       },
       loginCheck: false,
       title: this.$apiRootPath,
-      loginId: ''
+      loginId: '',
+      newcomer: '',
+      noticeCompanys: [],
+      dialog: false,
+      com: {
+        company_title: '',
+        recruit_title: '',
+        careers: '',
+        position: '',
+        deadline: '',
+        recruit_url: ''
+      }
     }
   },
   mounted() {
     if (sessionStorage.getItem('token') != null) {
       this.loginCheck = true
       this.loginId = sessionStorage.getItem('loginId')
+      this.getCompanyList()
     } // zerocho
   },
   methods: {
@@ -107,8 +168,10 @@ export default {
           sessionStorage.setItem('loginId', r.data.token.id) //로컬스토리지에 토큰값 저장
           this.loginId = r.data.token.id
           this.loginCheck = true
+          this.newcomer = r.data.token.newcomer
+          this.getCompanyList()
         })
-        .catch(e =>{
+        .catch(e => {
           alert("아이디나 비밀번호가 잘못되었습니다.")
           console.error(e.message)
         })
@@ -117,14 +180,43 @@ export default {
       sessionStorage.removeItem('token');
       sessionStorage.removeItem('loginId');
       this.loginCheck = false
+      this.noticeCompanys = []
     },
-    signupPage(){
+    signupPage() {
       location.href = "http://localhost:8080/signup"
+    },
+    getCompanyList() {
+      axios.get(`http://10.120.73.194:5505/` + this.newcomer)
+        .then((r) => {
+          var com = JSON.stringify(r.data)
+          this.companys = JSON.parse(com)
+          console.log(this.companys)
+          this.noticeCompanys = this.companys.slice(0, 4)
+        })
+    },
+    noticeCompanyDetail(itemCompany) {
+      this.com.company_title = itemCompany.Company_title
+      this.com.recruit_title = itemCompany.Recruit_title
+      this.com.careers = itemCompany.Careers
+      this.com.position = itemCompany.Position
+      this.com.deadline = itemCompany.Deadline
+      this.com.recruit_url = itemCompany.Recruit_url
+      this.dialog = true
+    },
+    pageLocate(){
+      location.href=this.com.recruit_url
     }
   }
 }
 </script>
 <style type="text/css">
- a:link { color:#00BCD4; text-decoration: none;}
- a:visited { color: #00BCD4; text-decoration: none;}
+a:link {
+  color: #00BCD4;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #00BCD4;
+  text-decoration: none;
+}
 </style>

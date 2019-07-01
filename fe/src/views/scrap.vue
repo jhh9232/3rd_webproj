@@ -6,24 +6,15 @@
       <v-container fluid grid-list-sm>
         <v-layout row wrap>
           <v-flex v-for="item in pagingCompanys" xs6 sm6>
-            <v-card class="mr-2 ml-2 mb-4 mt-2 mx-auto" max-width="500">
-              <v-card-title>
-                <v-icon large left>
-                  mdi-twitter
-                </v-icon>
+            <v-card class="mr-2 ml-2 mb-4 mt-2 mx-auto" max-width="500" @click="pageLocate(item.Recruit_url)">
+              <v-card-title class="ml-2">
                 <span class="title headline font-weight-bold ">{{item.Company_title}} </span>
               </v-card-title>
-              <v-card-text>
-                {{item.Recruit_title}}<br>
+              <v-card-text class="ml-3">
+                <span class="font-weight-bold">{{item.Recruit_title}}</span><br><br>
                 경력 : {{item.Careers}}<br>
                 위치 : {{item.Position}}<br>
                 모집기간 : {{item.Deadline}}<br>
-                <br>
-                <hr>
-                <br>
-                지원하기
-                <br>
-                <span><a>{{item.Recruit_url}}</a></span><br>
               </v-card-text>
               <v-card-actions>
                 <v-list-tile class="grow">
@@ -82,7 +73,6 @@ export default {
       axios.get(`http://localhost:3303/getScrapCompany/${user_id}`)
         .then((r) => {
           this.companys = r.data.msg
-          console.log(this.companys)
           this.pagingCompanys = this.companys.slice(this.startPage, this.endPage)
           this.maxPage = Math.ceil(this.companys.length / 10)
         })
@@ -123,6 +113,9 @@ export default {
     },
     pagingCompanyList() {
       this.pagingCompanys = this.companys.slice(this.startPage, this.endPage)
+    },
+    pageLocate(url){
+      location.href=url
     }
   }
 }
