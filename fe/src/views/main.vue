@@ -65,7 +65,7 @@ export default {
     return {
       fieldList: [{
           field: '전체',
-          filterField: 'all'
+          filterField: ''
         }, {
           field: '웹프로그래머',
           filterField: 'web'
@@ -125,7 +125,7 @@ export default {
       ],
       companys: [],
       pagingCompanys: [],
-      selected: 'all',
+      selected: '',
       nowPage: 1,
       startPage: 0,
       endPage: 10,
@@ -155,32 +155,23 @@ export default {
       this.pagingCompanys = this.companys.slice(this.startPage, this.endPage)
     },
     getCompanyList() {
-      if (this.selected == "all") {
-        axios.get(`http://10.120.73.194:5505/`)
-          .then((r) => {
-            var com = JSON.stringify(r.data)
-            this.companys = JSON.parse(com)
+      axios.get(`http://10.120.73.194:5505/` + this.selected)
+        .then((r) => {
+          var com = JSON.stringify(r.data)
+          this.companys = JSON.parse(com)
+          if (this.companys.length) {
             this.pagingCompanys = this.companys.slice(this.startPage, this.endPage)
             this.maxPage = Math.ceil(this.companys.length / 10)
-          })
-      } else {
-        axios.get(`http://10.120.73.194:5505/` + this.selected)
-          .then((r) => {
-            var com = JSON.stringify(r.data)
-            this.companys = JSON.parse(com)
-            if (this.companys.length) {
-              this.pagingCompanys = this.companys.slice(this.startPage, this.endPage)
-              this.maxPage = Math.ceil(this.companys.length / 10)
-            } else {
-              this.pagingCompanys = []
-              this.maxPage = 1
-            }
-          })
-      }
+          } else {
+            this.pagingCompanys = []
+            this.maxPage = 1
+          }
+        })
+
     },
     postScrapCompany(scrapCompany) {
       var loginId = sessionStorage.getItem('loginId')
-      if (loginId==null) {
+      if (loginId == null) {
         alert("로그인 후 이용할 수 있습니다.")
       } else {
         axios.post('http://localhost:3303/scrapCompany/', {
@@ -196,8 +187,8 @@ export default {
           })
       }
     },
-    pageLocate(url){
-      location.href=url
+    pageLocate(url) {
+      location.href = url
     }
   }
 }

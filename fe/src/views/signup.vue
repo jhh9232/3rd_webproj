@@ -3,16 +3,17 @@
       <v-flex xs12 sm12>
     <h1 class="ml-4 mt-5">회원가입</h1>
         <v-card class="mr-2 ml-2 mb-4 mt-2">
-          <v-form class="ml-4">
+          <v-form class="ml-4" v-model="valid">
             <v-flex  xs12 sm8 md5 lg5 xl5>
             <v-layout row align-center>
             <h3 class="mr-3">ID</h3>
             <v-text-field
                 v-model="form.Id"
+                :rules="idCheckRule"
                 label="아이디를 입력하세요"
             >
             </v-text-field>
-            <v-btn class="mt-3" flat color="primary" @click="" >중복확인</v-btn>
+            <v-btn class="mt-3" flat color="primary" @click="duplicationCheck()" >중복확인</v-btn>
           </v-layout>
         </v-flex>
         <v-flex  xs12 sm8 md5 lg5 xl5>
@@ -20,6 +21,7 @@
             <h3 class="mr-2">PW</h3>
             <v-text-field xs4 sm4 md4 lg4 xl4
                 v-model="form.Pw"
+                :rules="pwCheckRule"
                 label="비밀번호를 입력하세요"
                 type="password"
             >
@@ -31,6 +33,7 @@
               <h3 class="mr-2">PW 확인</h3>
                 <v-text-field
                     v-model="PwCheck"
+                    :rules="pwCheckRule"
                     label="비밀번호를 입력하세요"
                     type="password"
                 >
@@ -42,6 +45,7 @@
               <h3 class="mr-2">Email</h3>
                 <v-text-field
                     v-model="form.Email"
+                    :rules="emailCheckRule"
                     label="이메일을 입력하세요"
                 >
                 </v-text-field>
@@ -51,7 +55,7 @@
             <v-flex  xs12 sm10 md8 lg8 xl8>
               <v-layout row justify-center align-center>
               <h3 class="mr-2">관심분야</h3>
-                  <v-select :items="fieldList"item-text="field" item-value="filterField" v-model="form.Newcomer" label="분야"></v-select>
+                  <v-select :rules="newcomerCheckRule" :items="fieldList"item-text="field" item-value="filterField" v-model="form.Newcomer" label="분야"></v-select>
                 </v-text-field>
               </v-layout>
             </v-flex>
@@ -73,7 +77,7 @@
               <v-card-actions layout>
                 <v-spacer></v-spacer>
                 <div class="layout mt-5 mb-3">
-                <v-btn class="font-weight-bold" color="#F1C40F" @click="signup">회원가입</v-btn>
+                <v-btn :disabled="!valid" class="font-weight-bold" color="#F1C40F" @click="signup">회원가입</v-btn>
               </div>
               </v-card-actions>
         </v-card>
@@ -87,6 +91,21 @@ export default {
   name: 'App',
   data() {
     return {
+      valid: true,
+      pwCheckRule: [
+        v => v.length >= 5 || 'more than 5 characters',
+        v => /^(?=.*[0-9]+)[a-zA-Z][a-zA-Z0-9]{4,29}$/.test(v) || 'first letter english, include numbers '
+      ],
+      idCheckRule: [
+        v => !!v || 'ID Required'
+      ],
+      emailCheckRule: [
+        v => !!v || 'Email Required',
+        v => /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i.test(v) || 'It is not in email format.'
+      ],
+      newcomerCheckRule: [
+        v => !!v || 'Field Required'
+      ],
       form: {
         Id: "",
         Pw: "",
@@ -94,10 +113,8 @@ export default {
         Newcomer: ""
       },
       PwCheck: "",
+      IdDupCheck: false,
       fieldList: [{
-          field: '전체',
-          filterField: 'all'
-        }, {
           field: '웹프로그래머',
           filterField: 'web'
         }, {
@@ -159,13 +176,37 @@ export default {
   mounted() {},
   methods: {
     signup() {
-      axios.post('http://localhost:3303/signup', this.form)
+      if (this.InDupCheck == true) {
+        if (this.form.Pw == this.PwCheck) {
+          axios.post('http://localhost:3303/signup', this.form)
+            .then(r => {
+              if (r.data.success) {
+                location.href = "http://localhost:8080/main"
+              }
+            })
+            .catch(e => console.error(e.message))
+        } else {
+          alert("비밀번호 확인이 일치하지 않습니다.")
+        }
+      } else {
+        console.log(this.InDupCheck)
+        alert("아이디 중복확인을 해주세요.")
+      }
+    },
+    duplicationCheck() {
+      axios.post('http://localhost:3303/findone/', this.form)
         .then(r => {
-          if (r.data.success) {
-            location.href = "http://localhost:8080/main"
+          if (r.data.token == null) {
+            this.InDupCheck = true
+            alert("사용할 수 있는 아이디입니다.")
+          } else {
+            this.InDupCheck = false
+            alert("중복되는 아이디입니다.")
           }
         })
-        .catch(e => console.error(e.message))
+        .catch(e => {
+          console.log(e.message)
+        })
     }
   }
 }
