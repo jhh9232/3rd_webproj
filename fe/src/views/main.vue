@@ -14,7 +14,7 @@
       <v-container fluid grid-list-sm>
         <v-layout row wrap>
           <v-flex v-for="item in pagingCompanys" xs6 sm6>
-            <v-card class="mr-2 ml-2 mb-4 mt-2 mx-auto" max-width="500" @click="pageLocate(item.Recruit_url)">
+            <v-card class="mr-2 ml-2 mb-4 mt-2 mx-auto companyCard" max-width="500" @click="pageLocate(item.Recruit_url)">
               <v-card-title class="ml-2">
                 <span class="title headline font-weight-bold ">{{item.Company_title}} </span>
               </v-card-title>
@@ -34,12 +34,12 @@
                     <v-list-tile-title>JABARA JOB</v-list-tile-title>
                   </v-list-tile-content>
 
-                  <v-layout align-center justify-end>
-                    <v-btn flat color="orange" @click="postScrapCompany(item)">
+                  <v-layout align-center justify-end ml-4 mb-2>
+                    <v-btn flat small color="orange" @click="postScrapCompany(item)">
                       <v-icon>bookmarks</v-icon>
                       스크랩
                     </v-btn>
-                    <v-btn flat color="blue-grey darken-3" @click="">
+                    <v-btn flat small color="blue-grey darken-3" @click="">
                       <v-icon>share</v-icon>
                       공유
                     </v-btn>
@@ -130,20 +130,18 @@ export default {
       startPage: 0,
       endPage: 10,
       maxPage: 0,
-      scrapCheck: false
+      scrapCheck: false,
     }
   },
   mounted() {
     this.getCompanyList()
+    
   },
   methods: {
     paging() {
       this.endPage = this.nowPage * 10
       this.startPage = this.endPage - 10
       this.pagingCompanyList()
-      // console.log('now'+this.nowPage)
-      // console.log('start'+this.startPage)
-      // console.log('end'+this.endPage)
     },
     changePosition() {
       this.nowPage = 1
@@ -153,7 +151,7 @@ export default {
     },
     pagingCompanyList() {
       this.pagingCompanys = this.companys.slice(this.startPage, this.endPage)
-    },
+    }, //http://10.120.73.194:5505/
     getCompanyList() {
       axios.get(`http://10.120.73.194:5505/` + this.selected)
         .then((r) => {
@@ -194,5 +192,7 @@ export default {
 }
 </script>
 <style>
-
+.companyCard:hover{
+  color:gray;
+}
 </style>

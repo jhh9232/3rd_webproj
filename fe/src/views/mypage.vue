@@ -6,20 +6,19 @@
       <v-container grid-list-md ml-4>
         <v-layout row wrap>
           <v-flex xs4 sm4 md4 align-center justify-center layout text-xs-center>
-            <v-avatar :tile="tile" :size="150" color="grey lighten-4">
+            <v-avatar :size="150" color="grey lighten-4">
               <img src="https://vuetifyjs.com/apple-touch-icon-180x180.png" alt="avatar">
             </v-avatar>
           </v-flex>
           <v-flex xs5 sm5 md5 align-center justify-center mt-5>
-            <h1>ID</h1>
-            <h2>Email@Email.com</h2>
-              <v-btn color="orange">수정</v-btn>
+            <h1>{{user.id}}</h1>
+            <h2>{{user.email}}</h2>
+              <v-btn flat color="teal">수정</v-btn>
           </v-flex>
         </v-layout>
       </v-container>
-      <v-driven dark></v-driven>
       <v-container>
-        <h2 class="ml-2">최근 본 공고</h2>
+        <h2 class="ml-2 mt-2">최근 본 공고</h2>
         <v-layout row wrap mt-4>
           <v-flex v-for="i in 3" :key="i" xs3 sm3 md3 lg3 xl3 mr-4>
             <v-card>
@@ -27,7 +26,7 @@
               <v-card-title primary-title>
                 <div>
                   <h3 class="headline mb-0">Kangaroo Valley Safari</h3>
-                  <div> {{ card_text }} </div>
+                  <div> </div>
                 </div>
               </v-card-title>
 
@@ -49,9 +48,19 @@ export default {
   name: 'App',
   data() {
     return {
+      user:{
+        id:'',
+        email:'',
+        newcomer:''
+      }
     }
   },
-  mounted() {},
+  mounted() {
+    this.user.id = sessionStorage.getItem('loginId') //로컬스토리지에 토큰값 저장
+    this.user.email = sessionStorage.getItem('email') //로컬스토리지에 토큰값 저장
+    this.user.newcomer = sessionStorage.getItem('newcomer') //로컬스토리지에 토큰값 저장
+
+  },
   methods: {}
 }
 </script>

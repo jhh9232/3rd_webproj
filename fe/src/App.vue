@@ -4,18 +4,18 @@
     <v-list>
       <v-container align-center>
         <template v-if="!loginCheck">
-          <h3 class="text-xs-center mt-3">로그인</h3>
+          <h2 class="text-xs-center mt-3">로그인</h2>
           <div class="pa-3 mt-3  elevation-1">
             <v-text-field v-model="form.Id" label="ID">
             </v-text-field>
             <v-text-field v-model="form.Pw" label="PASSWORD" type="password">
             </v-text-field>
-            <v-btn large block dark color="#F1C40F" class="black--text font-weight-bold" @click="login()">로그인</v-btn>
-            <v-btn large block dark color="#F1C40F" class="black--text font-weight-bold" @click="signupPage()">회원가입</v-btn>
+            <v-btn large block dark color="#26A69A" class="white--text font-weight-bold" @click="login()">로그인</v-btn>
+            <v-btn large block dark color="#5C6BC0" class="white--text font-weight-bold" @click="signupPage()">회원가입</v-btn>
           </div>
         </template>
         <template v-if="loginCheck">
-          <h3 class="text-xs-center mt-3">회원정보</h3>
+          <h2 class="text-xs-center mt-3">회원정보</h2>
           <div class="pa-3 mt-3 elevation-1">
             <v-layout row>
               <v-flex align-center justify-center layout>
@@ -39,7 +39,7 @@
                 </div><br>
               </v-flex>
             </v-layout>
-            <v-btn large block dark color="#F1C40F" class="black--text font-weight-bold" @click="logout()">로그아웃</v-btn>
+            <v-btn large block dark color="#26A69A" class="black--text font-weight-bold" @click="logout()">로그아웃</v-btn>
           </div>
         </template>
       </v-container>
@@ -47,7 +47,7 @@
       <v-container align-center>
         <template v-if="loginCheck">
           <v-flex mb-3 v-for="item in noticeCompanys" xm12 sm12 xl12>
-            <v-card color="#FFFFFCC" class="black--text elevation-2" height="50px" @click="noticeCompanyDetail(item)">
+            <v-card color="#FFFFFCC" class="black--text elevation-2 companyCard" height="50px" @click="noticeCompanyDetail(item)">
               <v-layout row>
                 <v-flex xs9 ml-2 mt-1>
                   <div>{{item.Company_title}}</div>
@@ -89,7 +89,7 @@
     <router-view />
   </v-content>
   <v-dialog v-model="dialog" max-width="550">
-    <v-card class="mr-2 ml-4 mb-4 mt-2 mx-auto" max-width="500" @click="pageLocate()">
+    <v-card class="mr-2 ml-4 mb-4 mt-2 mx-auto companyCard" max-width="500" @click="pageLocate()">
       <v-card-title>
         <span class="title headline font-weight-bold ml-2">{{com.company_title}} </span>
       </v-card-title>
@@ -166,6 +166,9 @@ export default {
         .then(r => {
           sessionStorage.setItem('token', r.data.token) //로컬스토리지에 토큰값 저장
           sessionStorage.setItem('loginId', r.data.token.id) //로컬스토리지에 토큰값 저장
+          sessionStorage.setItem('email', r.data.token.email) //로컬스토리지에 토큰값 저장
+          sessionStorage.setItem('newcomer', r.data.token.newcomer) //로컬스토리지에 토큰값 저장
+
           this.loginId = r.data.token.id
           this.loginCheck = true
           this.newcomer = r.data.token.newcomer
@@ -218,5 +221,9 @@ a:link {
 a:visited {
   color: #00BCD4;
   text-decoration: none;
+}
+
+.companyCard:hover{
+  color:gray;
 }
 </style>

@@ -6,7 +6,7 @@
       <v-container fluid grid-list-sm>
         <v-layout row wrap>
           <v-flex v-for="item in pagingCompanys" xs6 sm6>
-            <v-card class="mr-2 ml-2 mb-4 mt-2 mx-auto" max-width="500" @click="pageLocate(item.Recruit_url)">
+            <v-card class="mr-2 ml-2 mb-4 mt-2 mx-auto companyCard" max-width="500" @click="pageLocate(item.Recruit_url)">
               <v-card-title class="ml-2">
                 <span class="title headline font-weight-bold ">{{item.Company_title}} </span>
               </v-card-title>
@@ -120,3 +120,8 @@ export default {
   }
 }
 </script>
+<style>
+.companyCard:hover{
+  color:gray;
+}
+</style>
