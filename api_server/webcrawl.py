@@ -151,7 +151,7 @@ def Parse_Job(URL):
         
         len_page = PageLength(driver)
         next_page = len_page // 400
-        len_page = len_page // 40 + 1
+        len_page = (len_page-1) // 40 + 1
         #LIS BTN : //*[@id="dvGIPaging"]/div/ul/li[1]
         #NEXT BTN : //*[@id="dvGIPaging"]/div/p/a
 
