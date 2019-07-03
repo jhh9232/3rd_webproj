@@ -135,23 +135,28 @@ export default {
   },
   mounted() {
     this.getCompanyList()
-    
+
   },
   methods: {
+    //현재 페이지를 계산함
     paging() {
       this.endPage = this.nowPage * 10
       this.startPage = this.endPage - 10
       this.pagingCompanyList()
     },
+    //직무를 바꿨을 때 페이지를 초기화 함
     changePosition() {
       this.nowPage = 1
       this.startPage = 0
       this.endPage = 10
       this.getCompanyList()
     },
+    //현재 페이지에 맞는 채용공고 리스트를 가져옴
     pagingCompanyList() {
       this.pagingCompanys = this.companys.slice(this.startPage, this.endPage)
-    }, //http://10.120.73.194:5505/
+    },
+    //http://10.120.73.194:5505/
+    //현재 직무에 맞는 회사 리스트를 가져옴
     getCompanyList() {
       axios.get(`http://10.120.73.194:5505/` + this.selected)
         .then((r) => {
@@ -167,6 +172,7 @@ export default {
         })
 
     },
+    //채용공고를 스크랩함
     postScrapCompany(scrapCompany) {
       var loginId = sessionStorage.getItem('loginId')
       if (loginId == null) {

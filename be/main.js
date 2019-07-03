@@ -59,6 +59,18 @@ app.post('/findone', (req, res, next)=>{
         //res.send('<script>alert("'+obj+'"); history.back();</script>')
     })
 })
+// User.updateOne({ _id: '5cbd50967c00ec110c8d7912' }, { $set: { age: 27 } })
+app.put('/update', (req, res, next)=>{
+    console.log(req.body)
+    Users.updateOne({ id: req.body.id }, { $set: { email: req.body.email ,newcomer:req.body.newcomer} })
+    .then(r => {
+      res.send({success : true})
+    }).catch(e => {
+      res.send({success : false, msg: e.message})
+    })
+})
+
+
 app.post('/deleteone', (req, res, next)=>{
     console.log(req.body.Id)
     Users.deleteOne({id: req.body.Id}, function(err, obj){

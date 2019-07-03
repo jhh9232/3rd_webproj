@@ -6,7 +6,7 @@
       <v-container fluid grid-list-sm>
         <v-layout row wrap>
           <v-flex v-for="item in pagingCompanys" xs6 sm6>
-            <v-card class="mr-2 ml-2 mb-4 mt-2 mx-auto companyCard" max-width="500" @click="pageLocate(item.Recruit_url)">
+            <v-card class="mr-2 ml-2 mb-4 mt-2 mx-auto companyCard" max-width="500" @click="pageMove(item.Recruit_url)">
               <v-card-title class="ml-2">
                 <span class="title headline font-weight-bold ">{{item.Company_title}} </span>
               </v-card-title>
@@ -68,6 +68,7 @@ export default {
     this.getScrapCompany()
   },
   methods: {
+    //스크랩 된 채용공고 리스트를 가져옴
     getScrapCompany() {
       var user_id = sessionStorage.getItem('loginId')
       axios.get(`http://localhost:3303/getScrapCompany/${user_id}`)
@@ -80,6 +81,7 @@ export default {
           console.error(e.message)
         })
     },
+    //스크랩된 채용공고를 삭제함
     deleteScrapCompany(company) {
       var user_id = sessionStorage.getItem('loginId')
       axios.post('http://localhost:3303/deleteScrapCompany', {
@@ -97,6 +99,7 @@ export default {
           console.error(e.message)
         })
     },
+    //페이징
     paging() {
       this.endPage = this.nowPage * 10
       this.startPage = this.endPage - 10
@@ -105,16 +108,19 @@ export default {
       // console.log('start'+this.startPage)
       // console.log('end'+this.endPage)
     },
+    //직무가 바뀌었을 때 페이지를 초기화 함
     changePosition() {
       this.nowPage = 1
       this.startPage = 0
       this.endPage = 10
       this.pagingCompanys()
     },
+    //현재 페이지에 맞는 채용공고 리스트를 가져옴
     pagingCompanyList() {
       this.pagingCompanys = this.companys.slice(this.startPage, this.endPage)
     },
-    pageLocate(url){
+    //채용공고를 클릭했을 때 외부 페이지로 이동함
+    pageMove(url){
       location.href=url
     }
   }
