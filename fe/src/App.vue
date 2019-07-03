@@ -89,7 +89,8 @@
     <router-view />
   </v-content>
   <v-dialog v-model="dialog" max-width="550">
-    <v-card class="mr-2 ml-4 mb-4 mt-2 mx-auto companyCard" max-width="500" @click="pageLocate()">
+    <v-card class="mr-2 ml-4 mb-4 mt-2 mx-auto companyCard" max-width="500" >
+      <div @click="pageMove()">
       <v-card-title>
         <span class="title headline font-weight-bold ml-2">{{com.company_title}} </span>
       </v-card-title>
@@ -99,6 +100,7 @@
         위치 : {{com.position}}<br>
         모집기간 : {{com.deadline}}<br>
       </v-card-text>
+    </div>
       <v-card-actions>
         <v-list-tile class="grow">
           <v-list-tile-avatar color="grey darken-3">
@@ -206,7 +208,7 @@ export default {
       this.com.recruit_url = itemCompany.Recruit_url
       this.dialog = true
     },
-    pageLocate(){
+    pageMove(){
       location.href=this.com.recruit_url
     }
   }

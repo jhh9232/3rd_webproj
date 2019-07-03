@@ -175,6 +175,7 @@ export default {
   },
   mounted() {},
   methods: {
+    //회원가입
     signup() {
       if (this.InDupCheck == true) {
         if (this.form.Pw == this.PwCheck) {
@@ -193,6 +194,7 @@ export default {
         alert("아이디 중복확인을 해주세요.")
       }
     },
+    //아이디 중복체크
     duplicationCheck() {
       axios.post('http://localhost:3303/findone/', this.form)
         .then(r => {

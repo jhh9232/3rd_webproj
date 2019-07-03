@@ -5,17 +5,21 @@
     <v-card class="mr-2 ml-2 mb-4 mt-2">
       <v-container grid-list-md ml-4>
         <v-layout row wrap>
-          <v-flex xs4 sm4 md4 align-center justify-center layout text-xs-center>
+          <v-flex xs4 sm4 md4 align-center justify-center layout text-xs-center mt-4>
             <v-avatar :size="150" color="grey lighten-4">
               <img src="https://vuetifyjs.com/apple-touch-icon-180x180.png" alt="avatar">
             </v-avatar>
           </v-flex>
-          <v-flex xs5 sm5 md5 align-center justify-center mt-5>
-            <template v-if="!modification">
-              <h2>{{user.Id}}</h2>
-              <h2>{{user.email}}</h2>
-            </template>
+          <template v-if="!modification">
+            <v-flex xs5 sm5 md5 align-center justify-center mt-5>
+              <h2>ID: {{user.Id}}</h2>
+              <h2 class="mt-2">Email: {{user.email}}</h2>
+              <h2 class="mt-2">Field:</h2>
+            </v-flex>
+          </template>
+          <v-flex xs5 sm5 md5 align-center justify-center mt-3>
             <template v-if="modification">
+              <h2>ID: {{user.Id}}</h2>
               <v-text-field v-model="putUser.email" label="Email"></v-text-field>
               <v-select :items="fieldList" item-text="field" item-value="filterField" v-model="putUser.newcomer" label="직무"></v-select>
             </template>
@@ -31,6 +35,7 @@
           </template>
         </v-layout>
       </v-container>
+      <!--
       <v-container>
         <h2 class="ml-2 mt-2">최근 본 공고</h2>
         <v-layout row wrap mt-4>
@@ -52,6 +57,7 @@
           </v-flex>
         </v-layout>
       </v-container>
+    -->
     </v-card>
   </v-flex>
 </v-layout>

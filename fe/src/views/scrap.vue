@@ -6,7 +6,8 @@
       <v-container fluid grid-list-sm>
         <v-layout row wrap>
           <v-flex v-for="item in pagingCompanys" xs6 sm6>
-            <v-card class="mr-2 ml-2 mb-4 mt-2 mx-auto companyCard" max-width="500" @click="pageMove(item.Recruit_url)">
+            <v-card class="mr-2 ml-2 mb-4 mt-2 mx-auto companyCard" max-width="500">
+              <div @click="pageMove(item.Recruit_url)">
               <v-card-title class="ml-2">
                 <span class="title headline font-weight-bold ">{{item.Company_title}} </span>
               </v-card-title>
@@ -16,6 +17,7 @@
                 위치 : {{item.Position}}<br>
                 모집기간 : {{item.Deadline}}<br>
               </v-card-text>
+            </div>
               <v-card-actions>
                 <v-list-tile class="grow">
                   <v-list-tile-avatar color="grey darken-3">
@@ -104,9 +106,6 @@ export default {
       this.endPage = this.nowPage * 10
       this.startPage = this.endPage - 10
       this.pagingCompanyList()
-      // console.log('now'+this.nowPage)
-      // console.log('start'+this.startPage)
-      // console.log('end'+this.endPage)
     },
     //직무가 바뀌었을 때 페이지를 초기화 함
     changePosition() {

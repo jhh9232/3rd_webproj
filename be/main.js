@@ -20,6 +20,10 @@ app.listen(3303, function() {
     console.log('Server start')
 })
 
+Scrap.find()
+     .then(r => console.log(r))
+     .catch(e => console.error(e))
+
 // mongodb setup
 mongoose.connect('mongodb://127.0.0.1:27017/3webDB',
  { useNewUrlParser: true }, (err) => {

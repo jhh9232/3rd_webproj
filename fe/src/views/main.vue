@@ -14,7 +14,8 @@
       <v-container fluid grid-list-sm>
         <v-layout row wrap>
           <v-flex v-for="item in pagingCompanys" xs6 sm6>
-            <v-card class="mr-2 ml-2 mb-4 mt-2 mx-auto companyCard" max-width="500" @click="pageLocate(item.Recruit_url)">
+            <v-card class="mr-2 ml-2 mb-4 mt-2 mx-auto companyCard" max-width="500" >
+              <div @click="pageLocate(item.Recruit_url)">
               <v-card-title class="ml-2">
                 <span class="title headline font-weight-bold ">{{item.Company_title}} </span>
               </v-card-title>
@@ -24,6 +25,7 @@
                 위치 : {{item.Position}}<br>
                 모집기간 : {{item.Deadline}}<br>
               </v-card-text>
+            </div>
               <v-card-actions>
                 <v-list-tile class="grow">
                   <v-list-tile-avatar color="grey darken-3">
@@ -155,7 +157,6 @@ export default {
     pagingCompanyList() {
       this.pagingCompanys = this.companys.slice(this.startPage, this.endPage)
     },
-    //http://10.120.73.194:5505/
     //현재 직무에 맞는 회사 리스트를 가져옴
     getCompanyList() {
       axios.get(`http://10.120.73.194:5505/` + this.selected)

@@ -5,7 +5,7 @@ const scrapSchema = new mongoose.Schema({
     Company_title:{type:String, required : true},
     Company_url:{type:String, required : true},
     Recruit_title:{type:String, required : true},
-    Recruit_url:{type:String, required : true, unique: true},
+    Recruit_url:{type:String, required : true},
     Careers:{type:String, required : true},
     Position:{type:String, required : true},
     Deadline:{type:String, required : true},
