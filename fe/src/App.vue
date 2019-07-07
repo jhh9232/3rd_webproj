@@ -160,21 +160,24 @@ export default {
       this.loginCheck = true
       this.loginId = sessionStorage.getItem('loginId')
       this.getCompanyList()
-    } // zerocho
+    }else{
+      this.logout()
+    }
   },
   methods: {
     login() {
       axios.post('http://localhost:3303/findone', this.form)
         .then(r => {
           sessionStorage.setItem('token', r.data.token) //로컬스토리지에 토큰값 저장
-          sessionStorage.setItem('loginId', r.data.token.id) //로컬스토리지에 토큰값 저장
-          sessionStorage.setItem('email', r.data.token.email) //로컬스토리지에 토큰값 저장
-          sessionStorage.setItem('newcomer', r.data.token.newcomer) //로컬스토리지에 토큰값 저장
+          sessionStorage.setItem('loginId', r.data.token.id)
+          sessionStorage.setItem('email', r.data.token.email)
+          sessionStorage.setItem('newcomer', r.data.token.newcomer)
 
           this.loginId = r.data.token.id
           this.loginCheck = true
           this.newcomer = r.data.token.newcomer
           this.getCompanyList()
+          location.href="http://localhost:8080/main"
         })
         .catch(e => {
           alert("아이디나 비밀번호가 잘못되었습니다.")
@@ -191,7 +194,7 @@ export default {
       location.href = "http://localhost:8080/signup"
     },
     getCompanyList() {
-      axios.get(`http://10.120.73.194:5505/` + this.newcomer)
+      axios.get(`http://localhost:5505/` + this.newcomer)
         .then((r) => {
           var com = JSON.stringify(r.data)
           this.companys = JSON.parse(com)
@@ -209,7 +212,7 @@ export default {
       this.dialog = true
     },
     pageMove(){
-      location.href=this.com.recruit_url
+      window.open(this.com.recruit_url, '_blank');
     }
   }
 }

@@ -159,7 +159,7 @@ export default {
     },
     //현재 직무에 맞는 회사 리스트를 가져옴
     getCompanyList() {
-      axios.get(`http://10.120.73.194:5505/` + this.selected)
+      axios.get(`http://localhost:5505/` + this.selected)
         .then((r) => {
           var com = JSON.stringify(r.data)
           this.companys = JSON.parse(com)
@@ -193,7 +193,7 @@ export default {
       }
     },
     pageLocate(url) {
-      location.href = url
+      window.open(url, '_blank');
     }
   }
 }

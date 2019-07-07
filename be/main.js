@@ -77,13 +77,11 @@ app.put('/update', (req, res, next)=>{
 
 app.post('/deleteone', (req, res, next)=>{
     console.log(req.body.Id)
-    Users.deleteOne({id: req.body.Id}, function(err, obj){
-        if(err){
-            console.log(err)
-            res.send(err)
-        }
-        console.log(obj)
-        //res.send('<script>alert("'+obj+'"); history.back();</script>')
+    Users.deleteOne({id: req.body.Id})
+    .then(r => {
+      res.send({success : true})
+    }).catch(e => {
+      res.send({success : false, msg: e.message})
     })
 })
 app.post('/scrapCompany', function(req, res){

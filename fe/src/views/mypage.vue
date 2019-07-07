@@ -14,7 +14,7 @@
             <v-flex xs5 sm5 md5 align-center justify-center mt-5>
               <h2>ID: {{user.Id}}</h2>
               <h2 class="mt-2">Email: {{user.email}}</h2>
-              <h2 class="mt-2">Field:</h2>
+              <!--<h2 class="mt-2">Field:</h2>-->
             </v-flex>
           </template>
           <v-flex xs5 sm5 md5 align-center justify-center mt-3>
@@ -27,11 +27,12 @@
         </v-layout>
         <v-layout class="justify-end mr-5">
           <template v-if="!modification">
-            <v-btn flat class="mt-3" color="teal" @click="userModifyClick">수정</v-btn>
+            <v-btn flat class="mt-3" color="teal" @click="userModifyClick()">수정</v-btn>
+            <v-btn flat class="mt-3" color="teal" @click="deleteUser()">회원탈퇴</v-btn>
           </template>
           <template v-if="modification">
-            <v-btn flat class="mt-3" color="teal" @click="putUserModify">적용</v-btn>
-            <v-btn flat class="mt-3" color="teal" @click="userModifyClick">취소</v-btn>
+            <v-btn flat class="mt-3" color="teal" @click="putUserModify()">적용</v-btn>
+            <v-btn flat class="mt-3" color="teal" @click="userModifyClick()">취소</v-btn>
           </template>
         </v-layout>
       </v-container>
@@ -168,12 +169,13 @@ export default {
           this.userModifyClick()
         })
         .catch(e => {
+          alert("회원정보 수정에 실패했습니다.")
           console.log(e.message)
         })
     },
     //바뀐 회원 정보를 가져옴
     getModifyUser() {
-      axios.post('http://localhost:3303/findone', this.user)
+      axios.post('http://localhost:3303/findone/', this.user)
         .then(r => {
           sessionStorage.setItem('email', r.data.token.email)
           sessionStorage.setItem('newcomer', r.data.token.newcomer)
@@ -185,6 +187,20 @@ export default {
           console.error(e.message)
         })
     },
+    deleteUser(){
+      axios.post('http://localhost:3303/deleteone/', this.user)
+        .then(r => {
+          alert("삭제되었습니다.")
+          sessionStorage.removeItem('token') //로컬스토리지에 토큰값 저장
+          sessionStorage.removeItem('loginId') //로컬스토리지에 토큰값 저장
+          sessionStorage.removeItem('email') //로컬스토리지에 토큰값 저장
+          sessionStorage.removeItem('newcomer') //로컬스토리지에 토큰값 저장
+          location.href="http://localhost:8080/main"
+        })
+        .catch(e => {
+          console.log(e.message)
+        })
+    }
   }
 }
 </script>
